@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/image/login.svg";
 import { createUser } from "../redux/features/user/userSlice";
@@ -13,6 +14,8 @@ const Signup = () => {
   const [disabled, setDisabled] = useState(true);
 
   const dispatch = useDispatch();
+
+  const { isError, error } = useSelector((s) => s.userSlice);
 
   useEffect(() => {
     if (
@@ -27,6 +30,12 @@ const Signup = () => {
       setDisabled(true);
     }
   }, [password, confirmPassword]);
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(error);
+    }
+  }, [isError, error]);
 
   const onSubmit = ({ name, email, password }) => {
     dispatch(createUser({ name, email, password }));
