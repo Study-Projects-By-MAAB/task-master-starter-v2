@@ -15,7 +15,7 @@ const Signup = () => {
 
   const dispatch = useDispatch();
 
-  const { isError, error } = useSelector((s) => s.userSlice);
+  const { isError, error, isLoading, email } = useSelector((s) => s.userSlice);
 
   useEffect(() => {
     if (
@@ -35,7 +35,10 @@ const Signup = () => {
     if (isError && error) {
       toast.error(error);
     }
-  }, [isError, error]);
+    if (!isLoading && email) {
+      navigate("/");
+    }
+  }, [isError, error, navigate, isLoading, email]);
 
   const onSubmit = ({ name, email, password }) => {
     dispatch(createUser({ name, email, password }));
