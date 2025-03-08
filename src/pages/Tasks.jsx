@@ -8,7 +8,10 @@ import { useGetTasksQuery } from "../redux/features/api/baseApi";
 
 const Tasks = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: tasks, isLoading } = useGetTasksQuery();
+  const { data: tasks, isLoading } = useGetTasksQuery(undefined, {
+    pollingInterval: 30000, // refetch every 30 seconds
+    refetchOnMountOrArgChange: true, // refetch when the component mounts or the query argument changes
+  });
 
   const pendingTasks = tasks?.filter((item) => item.status == "pending");
   const runningTasks = tasks?.filter((item) => item.status == "running");
@@ -58,7 +61,7 @@ const Tasks = () => {
               </div>
               <div className="space-y-3">
                 {pendingTasks?.map((item) => (
-                  <TaskCard key={item.id} task={item} />
+                  <TaskCard key={item._id} task={item} />
                 ))}
               </div>
             </div>
@@ -71,7 +74,7 @@ const Tasks = () => {
               </div>
               <div className="space-y-3">
                 {runningTasks?.map((item) => (
-                  <TaskCard key={item.id} task={item} />
+                  <TaskCard key={item._id} task={item} />
                 ))}
               </div>
             </div>
@@ -84,7 +87,7 @@ const Tasks = () => {
               </div>
               <div className="space-y-3">
                 {doneTasks?.map((item) => (
-                  <TaskCard key={item.id} task={item} />
+                  <TaskCard key={item._id} task={item} />
                 ))}
               </div>
             </div>

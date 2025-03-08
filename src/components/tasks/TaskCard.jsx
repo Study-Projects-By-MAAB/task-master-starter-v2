@@ -3,7 +3,6 @@ import { useUpdateTaskMutation } from "../../redux/features/api/baseApi";
 
 const TaskCard = ({ task }) => {
   const [updateTask, { data, error }] = useUpdateTaskMutation();
-  console.log(data, error);
 
   let updatedStatus;
 
